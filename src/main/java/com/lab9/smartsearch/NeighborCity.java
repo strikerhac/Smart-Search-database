@@ -1,6 +1,7 @@
 package com.lab9.smartsearch;
 
-public class NeighborCity {
+@SuppressWarnings("rawtypes")
+public class NeighborCity implements Comparable {
 	private double distance;
 	private String name;
 
@@ -27,4 +28,12 @@ public class NeighborCity {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public int compareTo(Object n) {
+		double comparedist = ((NeighborCity) n).getDistance();
+		/* For Ascending order */
+		return (int)(this.distance - comparedist);
+	}
+
+
 }

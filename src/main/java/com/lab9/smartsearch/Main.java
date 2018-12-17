@@ -1,58 +1,64 @@
 package com.lab9.smartsearch;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) {
-		int choice;
-		List list;
+
 		int max;
+		int choice;
 		String cityname;
 		double latitude;
 		double longitude;
+		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
-		DBhandler db = new DBhandler();
+		App app = new App();
 
-		System.out.println(
-				"Menu{Search by cityname = 1 | Search by latitude = 2 | search by longitude = 3 | Search nearby locations = 4}");
-		System.out.print("Your choice? ");
-		choice = input.nextInt();
+		while (true) {
+			System.out.println("Menu{Search lat/long by cityname = 1 | Search nearby Neighbors = 2}");
+			System.out.print("Your choice? ");
+			choice = input.nextInt();
 
-		switch (choice) {
-		case 1:
-			System.out.print("Enter city name = ");
-			input.nextLine();
-			cityname = input.nextLine();
-			list = db.getbyname(cityname);
-			System.out.println(list.size());
-			break;
+			if (choice == 1) {
+				System.out.print("Enter city name = ");
+				input.nextLine();
+				cityname = input.nextLine();
+				app.getLatitudeLongitude(cityname);
+				choice = 0;
+			}
 
-		case 2:
-			System.out.print("Enter latitude = ");
-			latitude = input.nextDouble();
-			list = db.getbylat(latitude);
-			System.out.println(list.size());
-			break;
+			else if (choice == 2) {
+				choice = 0;
+				System.out.println("Menu{Search by lat/long = 1 | Search by cityname= 2}");
+				System.out.print("Your choice? ");
+				choice = input.nextInt();
 
-		case 3:
-			System.out.print("Enter longitude = ");
-			longitude = input.nextDouble();
-			list = db.getbylong(longitude);
-			System.out.println(list.size());
-			break;
+				if (choice == 1) {
+					System.out.print("Enter latitude = ");
+					latitude = input.nextDouble();
+					System.out.print("Enter longitude = ");
+					longitude = input.nextDouble();
+					System.out.print("Enter Max number of Neighbors = ");
+					max = input.nextInt();
+					app.findNeighbors(latitude, longitude, max);
+				}
 
-		case 4:
-			System.out.print("Enter city name = ");
-			input.nextLine();
-			cityname = input.nextLine();
-			System.out.print("Enter Max number of locations = ");
-			max = input.nextInt();
-			list = db.getnearbylocs(cityname, max);
-			System.out.println(list.size());
-			break;
+				else if (choice == 2) {
+					System.out.print("Enter city name = ");
+					input.nextLine();
+					cityname = input.nextLine();
+					System.out.print("Enter Max number of Neighbors = ");
+					max = input.nextInt();
+					app.findNeighbors(cityname, max);
+				}
+
+				else
+					System.out.print("Enter valid choice");
+			}
+
+			else
+				System.out.print("Enter valid choice");
 		}
 	}
-
 }
